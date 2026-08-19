@@ -1,5 +1,18 @@
 # Refresh / Content Opportunity Scoring Using Machine Learning
 
+## Table of Contents
+
+- Abstract
+- Introduction
+- Problem Statement
+- Dataset
+- Methodology
+- Results
+- Limitations and Honest Framing
+- Ranked Recommendations
+- Reproducibility
+- Acknowledgments and Data Credit
+  
 ## Abstract
 
 Keeping website content up to date is important for maintaining search visibility and user engagement. In this project, I built a machine learning model to identify webpages that are good candidates for content refresh. The model was trained using the anonymized FlyRank ML Internship dataset containing search performance and content features. I compared a rule-based baseline with several machine learning models and selected the Random Forest model because it achieved the best overall performance. The final output is a ranked list of webpages with recommended actions and reason codes to support editorial decisions. The results are intended to assist human reviewers and should not be treated as automatic publishing decisions.
@@ -42,6 +55,8 @@ Several machine learning models were then trained and compared, including Logist
 
 The Random Forest model achieved the best overall performance and was selected as the final model. The model predicts the probability that a webpage needs a content refresh and generates a ranked list of recommendations with reason codes. These recommendations are intended to support editorial decisions and are not automatic publishing decisions.
 
+The dataset was divided using a client-holdout validation strategy so that webpages from the same client were not present in both training and testing sets. This reduces information leakage and provides a more realistic estimate of model performance.
+
 # Results
 
 Three machine learning models were trained and evaluated for predicting webpages that may require a content refresh. Logistic Regression, Decision Tree, and Random Forest were compared using Accuracy, Precision, Recall, F1-score, and ROC-AUC.
@@ -58,11 +73,15 @@ The Random Forest model achieved the best overall performance and was selected a
 | Decision Tree | 0.626 | 0.657 | 0.647 | 0.652 | 0.624 |
 | **Random Forest** | **0.696** | **0.704** | **0.759** | **0.731** | **0.762** |
 
+Random Forest was selected because it achieved the highest Accuracy, Precision, F1-score, and ROC-AUC among all evaluated models while maintaining strong Recall.
+
 The Random Forest model also provided feature importance scores, showing which features contributed most to the prediction. Impressions over the last 90 days, average search position, content age, and content size were the strongest indicators.
 
 ![Feature Importance](images/feature_importance.png)
 
 **Figure 2.** Top features used by the Random Forest model.
+
+The feature importance analysis indicates that impressions over the last 90 days and average search position contributed most to the model's predictions. Content age, word count, and sessions also had meaningful influence, while lower-ranked features contributed less.
 
 After selecting the best model, webpages were ranked based on their predicted priority for content refresh. Pages with higher scores were placed at the top of the recommendation queue so editors can review them first.
 
@@ -72,6 +91,11 @@ After selecting the best model, webpages were ranked based on their predicted pr
 
 ---
 
+## Error Analysis
+
+The Random Forest model produced the best overall performance, but some webpages were still classified incorrectly. These errors may occur because search performance depends on factors that are not included in the dataset, such as seasonal demand, competitor activity, search engine algorithm updates, and editorial changes.
+
+The model should therefore be viewed as a decision-support tool rather than an automated decision system.
 # Limitations and Honest Framing
 
 This project identifies webpages that may benefit from a content refresh using historical search and engagement data. The results are intended to support editorial decisions and should not be interpreted as proof that refreshing a page will improve search rankings. External factors such as seasonality, competitor activity, and search engine updates are not included in the dataset and may affect page performance. Human review should always be performed before taking action.
@@ -95,6 +119,12 @@ Based on the model predictions, the following actions are recommended:
 The project was developed using Python, Pandas, Scikit-learn, and Google Colab. All notebooks, source code, and outputs are available in this repository under the `work/notebooks/` directory.
 
 ---
+
+# Conclusion
+
+This project demonstrated that machine learning can be used to rank webpages for potential content refresh opportunities using historical search performance data. Among the evaluated models, Random Forest produced the strongest overall performance and generated a ranked recommendation queue for editorial review.
+
+The proposed workflow is intended to support content teams by helping prioritize webpages that may benefit from updates. Because search performance is affected by many external factors, the recommendations should always be reviewed by humans before any publishing decisions are made.
 
 # Acknowledgments and Data Credit
 
